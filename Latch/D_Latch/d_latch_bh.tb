@@ -1,0 +1,33 @@
+`timescale 1ns / 1ps
+module d_latch_bh_tb;
+reg d,en;
+wire q;
+
+d_latch_bh uut(.q(q), .d(d), .en(en));
+
+initial
+begin
+    en=0; d=0;  // q = X
+    #10 d=1;    // q = X
+
+    #10 en=1;   // q = 1
+    #10 d=0;    // q = 0
+
+    #10 d=1;    // q = 1
+
+    #10 en=0;   // q = 1
+    #10 d=0;    // q = 1
+
+    #10 d=1;    // q = 1
+
+    #10 en=1;   // q = 1
+    #10 d=0;    // q = 0
+
+    #10 $finish;
+end
+
+initial
+    $monitor("Time=%0t EN=%b D=%b Q=%b",
+              $time,en,d,q);
+
+endmodule
