@@ -1,0 +1,24 @@
+`timescale 1ns / 1ps
+module t_ff_tb;
+reg t,clr,clk;
+wire q,qbar;
+
+t_ff uut (.t(t),
+.clr(clr),
+.clk(clk),
+.q(q),
+.qbar(qbar));
+
+initial clk = 0;
+ always #5 clk = ~clk;
+ 
+ initial begin
+ clr=1; t=0; 
+ #10; clr=0;
+ t=1; #10;
+ t=0; #10;
+ t=1; #10;
+ clr=1;#10;
+ $finish;
+ end
+endmodule
