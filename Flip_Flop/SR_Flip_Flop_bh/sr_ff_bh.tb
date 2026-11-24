@@ -1,0 +1,22 @@
+`timescale 1ns / 1ps
+
+module tb_s_r_ff_bh;
+reg s, r, clk;
+reg [2:0] i;
+wire q, qbar;
+
+s_r_ff_bh uut (.s(s), .r(r), .clk(clk), .q(q), .qbar(qbar));
+
+ initial clk = 0;
+ always #5 clk = ~clk;
+ initial begin
+ $monitor("t=%0t s=%b r=%b clk=%b | q=%b qbar=%b", $time, s, r, clk, q, qbar);
+
+    s = 0; r = 1; #12;
+ for (i = 0; i < 4; i = i + 1) begin
+  {s, r} = i[1:0];   #10;       // 00, 01, 10, 11
+   end
+  $finish;
+ end
+endmodule
+  
