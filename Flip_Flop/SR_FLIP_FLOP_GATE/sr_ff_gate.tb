@@ -1,0 +1,24 @@
+`timescale 1ns / 1ps
+
+module tbs_r_ff_gate;
+reg s,r,clk;
+wire q,qbar;
+
+s_r_ff_gate uut(.s(s), .r(r), .clk(clk), .q(q), .qbar(qbar));
+
+initial clk=0;
+always #5 clk=~clk;
+initial begin
+$monitor("t=%0t s=%b r=%b clk=%b  | q=%b  qbar=%b", $time,s,r,clk,q,qbar);
+
+    s=0; r=0; #2;   //hold 
+    
+    s=0; r=1; #10;   //reset
+    s=0; r=0; #10;   //hold 
+    s=1; r=0; #10;   //set 
+    s=0; r=0; #10;   //hold
+    s=0; r=1; #10;   //reset
+    s=1; r=1; #10;   //invalid
+    $finish;
+    end
+endmodule
