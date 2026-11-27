@@ -1,0 +1,27 @@
+`timescale 1ns / 1ps
+
+module tb_sipo;
+
+reg clk, rst, s_in;
+wire [3:0] q;
+
+sipo uut (.clk(clk), .rst(rst), .s_in(s_in), .q(q));
+
+initial clk = 0;
+always #5 clk = ~clk;          // 10 ns period
+
+initial begin
+    rst = 1; s_in = 0;
+    #12;
+    rst = 0;
+    s_in = 1; #10;             // bit 1
+    s_in = 0; #10;             // bit 0
+    s_in = 1; #10;             // bit 1
+    s_in = 1; #10;             // bit 1
+    $finish;                   // stop right after 4 bits are loaded
+end
+
+initial
+    $monitor("T=%0t | rst=%b s_in=%b | q=%b", $time, rst, s_in, q);
+
+endmodule
