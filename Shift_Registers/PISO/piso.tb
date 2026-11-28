@@ -1,0 +1,33 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+ module piso_tb;
+  reg [3:0] p_in;
+  reg clk,rst,load;
+  wire s_out;
+ 
+  piso uut (.p_in(p_in), .clk(clk), .rst(rst), .load(load), .s_out(s_out));
+ 
+  always #5 clk = ~clk;
+    
+    initial begin
+    clk=0; rst=1; load=0;
+    p_in=4'b0000; 
+    #10;
+    rst=0;
+    
+    // load parraled dat 
+    #10; load =1;
+    p_in=4'b1011;
+    
+    //shift operation
+    #10;
+    load=0;
+    //wait for serial output
+    #40;
+   $finish;
+    end 
+     initial begin
+        $monitor("Time=%0t | Load=%b | P_in=%b | S_out=%b",
+                 $time, load, p_in, s_out);
+    end
+endmodule
